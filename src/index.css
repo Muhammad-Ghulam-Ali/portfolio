@@ -1,0 +1,32 @@
+body{
+  background-color: #111 !important;
+  padding-top: 70px !important; /* height of your navbar */
+  
+}
+nav{
+  background-color: #2c2c2c !important;
+  /* z-index: 1000 !important; */
+}
+.content {
+  margin-top: 200px !important;
+}
+.footer{
+  background-color: #2c2c2c !important;
+  color: #c8c5c5 !important;
+}
+.card{
+  height: auto;
+  min-height: 200px;
+  background-color: #2c2c2c !important; 
+  color: #d8d8d8;
+}
+.card a{
+  text-decoration: none;
+}
+.contact{
+  margin-top: 100px !important;
+  color: #d7d5d5 !important;
+}
+.about,.about p{
+  color: #c9c8c8 !important;
+}
