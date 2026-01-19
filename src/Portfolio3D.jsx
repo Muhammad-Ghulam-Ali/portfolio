@@ -239,11 +239,11 @@ const Portfolio3D = () => {
 
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-black/30 border-b border-cyan-500/20">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row justify-between items-center">
           <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
             Muhammad Ghulam Ali
           </h1>
-          <div className="flex gap-6">
+          <div className="flex mt-4 gap-6">
             {['Home', 'About', 'ML', 'Web', 'Contact'].map((item, index) => (
               <button
                 key={item}
