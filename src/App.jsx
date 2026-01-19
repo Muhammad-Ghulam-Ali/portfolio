@@ -1,32 +1,11 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-
-import Header from "./components/Header"
-import Footer from "./components/Footer"
-
-// Pages
-import Home from "./pages/Home"
-import Contact from "./pages/Contact"
-import About from "./pages/About"
-import Project from "./pages/Project"
-
-import React from 'react'
+import React from 'react';
+import Portfolio3D from './Portfolio3D';
 
 const App = () => {
   return (
-    <BrowserRouter>
-    <Header />
-    <Routes>
+  <Portfolio3D />
+)
+};
 
-    <Route path = "/" element = {<Home/>} />
-    <Route path = "/project" element = {<Project/>} />
-    <Route path = "/contact" element = {<Contact/>} />
-    <Route path = "/about" element = {<About/>} />
-
-    </Routes>
-    <Footer />
-    </BrowserRouter>
-  )
-}
-
-export default App
+export default App;
 
