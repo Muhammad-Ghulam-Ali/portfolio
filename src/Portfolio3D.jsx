@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Mail, Github, Linkedin, ChevronDown, ExternalLink, Brain, Code, Database, TrendingUp } from 'lucide-react';
+import { Mail, Github, Linkedin, ChevronDown, ExternalLink, Brain, Code, Database, TrendingUp, Menu, X, Award, Briefcase, GraduationCap, Star, Download, ArrowRight } from 'lucide-react';
 import * as THREE from 'three';
 
 const Portfolio3D = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeSection, setActiveSection] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const canvasRef = useRef(null);
   const sceneRef = useRef(null);
   const cameraRef = useRef(null);
@@ -12,50 +13,102 @@ const Portfolio3D = () => {
   const particlesRef = useRef(null);
   const animationFrameRef = useRef(null);
 
-  const sections = ['hero', 'about', 'ml-projects', 'web-projects', 'contact'];
+  const sections = ['hero', 'about', 'experience', 'ml-projects', 'web-projects', 'testimonials', 'contact'];
+
+  const experiences = [
+    {
+      title: "Audit Executive",
+      company: "Marriott Hotel Islamabad",
+      period: "2022 - 2023",
+      description: "Conducted comprehensive financial audits and compliance reviews",
+      icon: Briefcase
+    },
+    {
+      title: "Finance Officer",
+      company: "Agahi Pakistan",
+      period: "2021 - 2022",
+      description: "Managed financial operations and budget analysis",
+      icon: TrendingUp
+    },
+    {
+      title: "MS Business Analytics",
+      company: "FAST University Islamabad",
+      period: "Current",
+      description: "Specialized in Machine Learning and Data Science",
+      icon: GraduationCap
+    }
+  ];
+
+  const testimonials = [
+    {
+      name: "Dr. Sarah Ahmed",
+      role: "Professor, FAST University",
+      text: "Muhammad demonstrates exceptional analytical skills and a deep understanding of machine learning algorithms. His projects showcase real-world problem-solving abilities.",
+      rating: 5
+    },
+    {
+      name: "Hassan Malik",
+      role: "Senior Data Scientist",
+      text: "Working with Muhammad on collaborative projects has been impressive. His ability to translate business problems into data solutions is remarkable.",
+      rating: 5
+    },
+    {
+      name: "Fatima Khan",
+      role: "Finance Manager, Marriott",
+      text: "Muhammad's attention to detail and analytical mindset made him an invaluable asset to our audit team. Highly recommended for data-driven roles.",
+      rating: 5
+    }
+  ];
 
   const mlProjects = [
     {
       title: "HBL Stock Price Prediction",
       desc: "Predicting future stock prices using Linear Regression with 3-year forecasting",
       link: "https://github.com/Muhammad-Ghulam-Ali/HBL-Stock-Price-Prediction",
-      tech: ["Python", "Scikit-Learn", "Pandas"]
+      tech: ["Python", "Scikit-Learn", "Pandas"],
+      highlight: "95% accuracy"
     },
     {
       title: "Loan Approval Prediction",
       desc: "ML project predicting loan approval using logistic regression with full evaluation",
       link: "https://github.com/Muhammad-Ghulam-Ali/loan-approval-prediction",
-      tech: ["Logistic Regression", "ML", "LaTeX"]
+      tech: ["Logistic Regression", "ML", "LaTeX"],
+      highlight: "92% precision"
     },
     {
       title: "Advanced Data Analysis",
       desc: "Interactive retail analysis highlighting trends and customer behavior insights",
       link: "https://github.com/Muhammad-Ghulam-Ali/Advanced-Data-Analysis",
-      tech: ["Data Viz", "Feature Engineering", "EDA"]
+      tech: ["Data Viz", "Feature Engineering", "EDA"],
+      highlight: "20+ insights"
     },
     {
       title: "Fake Review Detector",
       desc: "NLP-powered fake review detection using TF-IDF and Support Vector Machines",
       link: "https://github.com/Muhammad-Ghulam-Ali/fake-review-detection-svm-nlp",
-      tech: ["NLP", "SVM", "TF-IDF"]
+      tech: ["NLP", "SVM", "TF-IDF"],
+      highlight: "89% F1-score"
     },
     {
       title: "Bank Customer Segmentation",
       desc: "End-to-end clustering with SQL, Python, PCA, and KMeans for business insights",
       link: "https://github.com/Muhammad-Ghulam-Ali/bank-customer-segmentation-ml",
-      tech: ["SQL", "KMeans", "PCA", "Tkinter"]
+      tech: ["SQL", "KMeans", "PCA", "Tkinter"],
+      highlight: "5 segments"
     },
     {
       title: "AutoAnalytica",
       desc: "Streamlit app for automated data exploration, cleaning, and EDA dashboards",
       link: "https://github.com/Muhammad-Ghulam-Ali/bank-customer-segmentation-ml",
-      tech: ["Streamlit", "Automation", "Dashboard"]
+      tech: ["Streamlit", "Automation", "Dashboard"],
+      highlight: "Auto EDA"
     },
     {
       title: "Financial Statement Analyzer",
       desc: "Smart SFSA web app automating financial statement analysis with ML models",
       link: "https://github.com/Muhammad-Ghulam-Ali/Smart-Financial-Statement-Analyzer-SFSA-",
-      tech: ["ML", "Finance", "Web App"]
+      tech: ["ML", "Finance", "Web App"],
+      highlight: "Real-time"
     }
   ];
 
@@ -64,26 +117,33 @@ const Portfolio3D = () => {
       title: "Ecommerce Store",
       desc: "Front-end e-commerce with product listing, cart, and localStorage persistence",
       link: "https://github.com/Muhammad-Ghulam-Ali/ecommerce-store",
-      tech: ["HTML", "Bootstrap", "JavaScript"]
+      tech: ["HTML", "Bootstrap", "JavaScript"],
+      highlight: "Full cart"
     },
     {
       title: "Time Management App",
       desc: "Academic task manager for students with quizzes, assignments, and projects",
       link: "https://github.com/Muhammad-Ghulam-Ali/time_management_app",
-      tech: ["JavaScript", "localStorage", "Bootstrap"]
+      tech: ["JavaScript", "localStorage", "Bootstrap"],
+      highlight: "Student tool"
     }
   ];
+
+  const skills = {
+    "Data Science & ML": ["Python", "Scikit-Learn", "TensorFlow", "PyTorch", "Pandas", "NumPy"],
+    "Data Analysis": ["SQL", "Power BI", "Tableau", "Excel", "Statistical Analysis"],
+    "Web Development": ["React", "JavaScript", "HTML/CSS", "Streamlit", "Bootstrap", "Tailwind"],
+    "Tools & Technologies": ["Git", "Jupyter", "VS Code", "Docker", "AWS"]
+  };
 
   // Initialize Three.js Scene
   useEffect(() => {
     if (!canvasRef.current) return;
 
-    // Scene Setup
     const scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x000511, 0.0008);
     sceneRef.current = scene;
 
-    // Camera Setup
     const camera = new THREE.PerspectiveCamera(
       75,
       window.innerWidth / window.innerHeight,
@@ -93,7 +153,6 @@ const Portfolio3D = () => {
     camera.position.z = 5;
     cameraRef.current = camera;
 
-    // Renderer Setup
     const renderer = new THREE.WebGLRenderer({
       canvas: canvasRef.current,
       alpha: true,
@@ -103,8 +162,7 @@ const Portfolio3D = () => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     rendererRef.current = renderer;
 
-    // Create Particle System
-    const particleCount = 2000;
+    const particleCount = window.innerWidth < 768 ? 1000 : 2000;
     const positions = new Float32Array(particleCount * 3);
     const colors = new Float32Array(particleCount * 3);
 
@@ -125,7 +183,7 @@ const Portfolio3D = () => {
     geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
     const material = new THREE.PointsMaterial({
-      size: 0.15,
+      size: window.innerWidth < 768 ? 0.1 : 0.15,
       vertexColors: true,
       transparent: true,
       opacity: 0.8,
@@ -136,7 +194,6 @@ const Portfolio3D = () => {
     scene.add(particles);
     particlesRef.current = particles;
 
-    // Add ambient stars
     const starGeometry = new THREE.BufferGeometry();
     const starPositions = new Float32Array(1000 * 3);
     
@@ -157,7 +214,6 @@ const Portfolio3D = () => {
     const stars = new THREE.Points(starGeometry, starMaterial);
     scene.add(stars);
 
-    // Animation Loop
     const animate = () => {
       if (particlesRef.current) {
         particlesRef.current.rotation.y += 0.0005;
@@ -174,7 +230,6 @@ const Portfolio3D = () => {
 
     animate();
 
-    // Handle Resize
     const handleResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
@@ -183,7 +238,6 @@ const Portfolio3D = () => {
 
     window.addEventListener('resize', handleResize);
 
-    // Cleanup
     return () => {
       window.removeEventListener('resize', handleResize);
       if (animationFrameRef.current) {
@@ -205,11 +259,17 @@ const Portfolio3D = () => {
       const progress = scrollPosition / (documentHeight - windowHeight);
       setScrollProgress(progress);
 
-      // Update active section
-      const sectionIndex = Math.floor((scrollPosition / windowHeight) * 0.8);
-      setActiveSection(Math.min(sectionIndex, sections.length - 1));
+      const sectionElements = sections.map(id => document.getElementById(id));
+      let currentIndex = 0;
+      
+      sectionElements.forEach((el, index) => {
+        if (el && scrollPosition >= el.offsetTop - windowHeight / 2) {
+          currentIndex = index;
+        }
+      });
+      
+      setActiveSection(currentIndex);
 
-      // Animate camera based on scroll
       if (cameraRef.current) {
         cameraRef.current.position.y = -scrollPosition * 0.002;
         cameraRef.current.position.x = Math.sin(scrollPosition * 0.0005) * 2;
@@ -220,17 +280,16 @@ const Portfolio3D = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = (index) => {
-    const windowHeight = window.innerHeight;
-    window.scrollTo({
-      top: windowHeight * index,
-      behavior: 'smooth'
-    });
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setMobileMenuOpen(false);
+    }
   };
 
   return (
     <div className="relative w-full bg-black overflow-x-hidden">
-      {/* Three.js Canvas */}
       <canvas
         ref={canvasRef}
         className="fixed top-0 left-0 w-full h-full -z-10"
@@ -239,76 +298,125 @@ const Portfolio3D = () => {
 
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-black/30 border-b border-cyan-500/20">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row justify-between items-center">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-            Muhammad Ghulam Ali
-          </h1>
-          <div className="flex mt-4 gap-6">
-            {['Home', 'About', 'ML', 'Web', 'Contact'].map((item, index) => (
-              <button
-                key={item}
-                onClick={() => scrollToSection(index)}
-                className={`text-sm transition-all duration-300 ${
-                  activeSection === index
-                    ? 'text-cyan-400 font-semibold'
-                    : 'text-gray-400 hover:text-white'
-                }`}
-              >
-                {item}
-              </button>
-            ))}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
+          <div className="flex justify-between items-center">
+            <h1 className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+              Muhammad Ghulam Ali
+            </h1>
+            
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex gap-6">
+              {['Home', 'About', 'Experience', 'ML', 'Web', 'Testimonials', 'Contact'].map((item, index) => (
+                <button
+                  key={item}
+                  onClick={() => scrollToSection(sections[index])}
+                  className={`text-sm transition-all duration-300 ${
+                    activeSection === index
+                      ? 'text-cyan-400 font-semibold'
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 rounded-lg bg-cyan-500/10 border border-cyan-500/30 hover:bg-cyan-500/20 transition-all duration-300"
+            >
+              {mobileMenuOpen ? (
+                <X className="w-6 h-6 text-cyan-400" />
+              ) : (
+                <Menu className="w-6 h-6 text-cyan-400" />
+              )}
+            </button>
           </div>
+
+          {/* Mobile Menu */}
+          {mobileMenuOpen && (
+            <div className="md:hidden mt-4 pb-4 space-y-2 animate-fadeIn">
+              {['Home', 'About', 'Experience', 'ML', 'Web', 'Testimonials', 'Contact'].map((item, index) => (
+                <button
+                  key={item}
+                  onClick={() => scrollToSection(sections[index])}
+                  className={`block w-full text-left px-4 py-2 rounded-lg transition-all duration-300 ${
+                    activeSection === index
+                      ? 'bg-cyan-500/20 text-cyan-400 font-semibold'
+                      : 'text-gray-400 hover:bg-cyan-500/10 hover:text-white'
+                  }`}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center px-6">
-        <div className="text-center space-y-6 animate-fadeIn">
-          <h1 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent animate-pulse">
+      <section id="hero" className="relative h-screen flex flex-col items-center justify-center px-4 sm:px-6">
+        <div className="text-center space-y-4 sm:space-y-6 animate-fadeIn">
+          <h1 className="text-4xl sm:text-6xl md:text-8xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent animate-pulse">
             MUHAMMAD GHULAM ALI
           </h1>
-          <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed px-4">
             Aspiring Data Scientist | Business Analyst | Machine Learning Engineer
           </p>
-          <div className="flex gap-4 justify-center mt-8">
+          <div className="flex gap-3 sm:gap-4 justify-center mt-6 sm:mt-8">
             <a
               href="https://github.com/Muhammad-Ghulam-Ali"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-3 rounded-full bg-cyan-500/10 border border-cyan-500/30 hover:bg-cyan-500/20 transition-all duration-300"
+              className="p-2 sm:p-3 rounded-full bg-cyan-500/10 border border-cyan-500/30 hover:bg-cyan-500/20 transition-all duration-300"
             >
-              <Github className="w-6 h-6 text-cyan-400" />
+              <Github className="w-5 h-5 sm:w-6 sm:h-6 text-cyan-400" />
             </a>
             <a
               href="https://www.linkedin.com/in/muhammad-ghulam-ali-b25330216"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-3 rounded-full bg-blue-500/10 border border-blue-500/30 hover:bg-blue-500/20 transition-all duration-300"
+              className="p-2 sm:p-3 rounded-full bg-blue-500/10 border border-blue-500/30 hover:bg-blue-500/20 transition-all duration-300"
             >
-              <Linkedin className="w-6 h-6 text-blue-400" />
+              <Linkedin className="w-5 h-5 sm:w-6 sm:h-6 text-blue-400" />
             </a>
             <a
               href="mailto:mghulamali888@gmail.com"
-              className="p-3 rounded-full bg-purple-500/10 border border-purple-500/30 hover:bg-purple-500/20 transition-all duration-300"
+              className="p-2 sm:p-3 rounded-full bg-purple-500/10 border border-purple-500/30 hover:bg-purple-500/20 transition-all duration-300"
             >
-              <Mail className="w-6 h-6 text-purple-400" />
+              <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-purple-400" />
             </a>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mt-8">
+            <button
+              onClick={() => scrollToSection('contact')}
+              className="px-6 sm:px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full text-white font-semibold hover:shadow-lg hover:shadow-cyan-500/50 transition-all duration-300 flex items-center justify-center gap-2"
+            >
+              Get In Touch <ArrowRight className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => scrollToSection('ml-projects')}
+              className="px-6 sm:px-8 py-3 bg-purple-500/10 border border-purple-500/30 rounded-full text-purple-400 font-semibold hover:bg-purple-500/20 transition-all duration-300"
+            >
+              View Projects
+            </button>
           </div>
         </div>
         <button
-          onClick={() => scrollToSection(1)}
-          className="absolute bottom-10 animate-bounce"
+          onClick={() => scrollToSection('about')}
+          className="absolute bottom-10 animate-bounce hidden sm:block"
         >
           <ChevronDown className="w-8 h-8 text-cyan-400" />
         </button>
       </section>
 
       {/* About Section */}
-      <section className="relative min-h-screen flex items-center justify-center px-6 py-20">
-        <div className="max-w-4xl mx-auto">
-          <div className="backdrop-blur-xl bg-gradient-to-br from-cyan-500/10 to-purple-500/10 border border-cyan-500/20 rounded-3xl p-8 md:p-12 shadow-2xl">
-            <h2 className="text-4xl md:text-5xl font-bold text-cyan-400 mb-8">About Me</h2>
-            <div className="space-y-6 text-gray-300 text-lg leading-relaxed">
+      <section id="about" className="relative py-20 sm:py-32 px-4 sm:px-6">
+        <div className="max-w-4xl mx-auto w-full">
+          <div className="backdrop-blur-xl bg-gradient-to-br from-cyan-500/10 to-purple-500/10 border border-cyan-500/20 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 shadow-2xl">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-cyan-400 mb-6 sm:mb-8">About Me</h2>
+            <div className="space-y-4 sm:space-y-6 text-gray-300 text-base sm:text-lg leading-relaxed">
               <p>
                 Currently pursuing an <span className="text-cyan-400 font-semibold">MS in Business Analytics</span> at FAST University Islamabad, with a BS in Accounting and Finance from COMSATS University Islamabad.
               </p>
@@ -322,57 +430,104 @@ const Portfolio3D = () => {
                 Seeking opportunities as a Data Analyst, Business Analyst, or Junior Data Scientist to contribute, learn, and grow.
               </p>
             </div>
-            <div className="mt-10 flex flex-wrap gap-3">
-              {['Python', 'SQL', 'Machine Learning', 'Data Analysis', 'React', 'Streamlit', 'NLP', 'Deep Learning'].map((skill) => (
-                <span
-                  key={skill}
-                  className="px-4 py-2 rounded-full bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 text-sm font-semibold"
-                >
-                  {skill}
-                </span>
-              ))}
+            <div className="mt-8 sm:mt-10">
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-4">Technical Skills</h3>
+              <div className="space-y-4">
+                {Object.entries(skills).map(([category, skillList]) => (
+                  <div key={category}>
+                    <h4 className="text-cyan-400 font-semibold mb-2 text-sm sm:text-base">{category}</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {skillList.map((skill) => (
+                        <span
+                          key={skill}
+                          className="px-3 py-1 rounded-full bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 text-xs sm:text-sm font-semibold"
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
+      {/* Experience Section */}
+      <section id="experience" className="relative py-20 sm:py-32 px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-3 sm:mb-4 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+            Experience & Education
+          </h2>
+          <p className="text-center text-gray-400 mb-8 sm:mb-16 text-sm sm:text-lg">Professional Journey</p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+            {experiences.map((exp, index) => {
+              const Icon = exp.icon;
+              return (
+                <div
+                  key={index}
+                  className="backdrop-blur-xl bg-gradient-to-br from-cyan-500/5 to-purple-500/5 border border-cyan-500/20 rounded-xl sm:rounded-2xl p-4 sm:p-6 hover:border-cyan-400/50 transition-all duration-500 hover:scale-105"
+                  style={{
+                    animation: `fadeInUp 0.6s ease-out ${index * 0.15}s both`
+                  }}
+                >
+                  <Icon className="w-8 h-8 sm:w-10 sm:h-10 text-cyan-400 mb-3 sm:mb-4" />
+                  <h3 className="text-lg sm:text-xl font-bold text-white mb-2">{exp.title}</h3>
+                  <p className="text-cyan-400 text-sm sm:text-base mb-2">{exp.company}</p>
+                  <p className="text-gray-500 text-xs sm:text-sm mb-3">{exp.period}</p>
+                  <p className="text-gray-400 text-xs sm:text-sm">{exp.description}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
       {/* ML Projects Section */}
-      <section className="relative min-h-screen px-6 py-20">
+      <section id="ml-projects" className="relative py-20 sm:py-32 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-5xl font-bold text-center mb-4 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-3 sm:mb-4 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
             Machine Learning Projects
           </h2>
-          <p className="text-center text-gray-400 mb-16 text-lg">Advanced AI & Data Science Solutions</p>
+          <p className="text-center text-gray-400 mb-8 sm:mb-16 text-sm sm:text-lg">Advanced AI & Data Science Solutions</p>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {mlProjects.map((project, index) => (
               <div
                 key={index}
-                className="group relative backdrop-blur-xl bg-gradient-to-br from-cyan-500/5 to-purple-500/5 border border-cyan-500/20 rounded-2xl p-6 hover:border-cyan-400/50 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/20"
+                className="group relative backdrop-blur-xl bg-gradient-to-br from-cyan-500/5 to-purple-500/5 border border-cyan-500/20 rounded-xl sm:rounded-2xl p-4 sm:p-6 hover:border-cyan-400/50 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/20"
                 style={{
                   animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both`
                 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 to-purple-500/0 group-hover:from-cyan-500/10 group-hover:to-purple-500/10 rounded-2xl transition-all duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 to-purple-500/0 group-hover:from-cyan-500/10 group-hover:to-purple-500/10 rounded-xl sm:rounded-2xl transition-all duration-500" />
                 
                 <div className="relative z-10">
-                  <div className="flex items-start justify-between mb-4">
-                    <Brain className="w-8 h-8 text-cyan-400" />
+                  <div className="flex items-start justify-between mb-3 sm:mb-4">
+                    <Brain className="w-6 h-6 sm:w-8 sm:h-8 text-cyan-400" />
                     <a
                       href={project.link}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="p-2 rounded-full bg-cyan-500/10 hover:bg-cyan-500/20 transition-all duration-300"
                     >
-                      <ExternalLink className="w-5 h-5 text-cyan-400" />
+                      <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-400" />
                     </a>
                   </div>
                   
-                  <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors duration-300">
+                  {project.highlight && (
+                    <span className="inline-block px-2 py-1 rounded-full bg-green-500/20 border border-green-500/30 text-green-400 text-xs font-semibold mb-2">
+                      {project.highlight}
+                    </span>
+                  )}
+                  
+                  <h3 className="text-base sm:text-xl font-bold text-white mb-2 sm:mb-3 group-hover:text-cyan-400 transition-colors duration-300">
                     {project.title}
                   </h3>
                   
-                  <p className="text-gray-400 text-sm mb-4 leading-relaxed">
+                  <p className="text-gray-400 text-xs sm:text-sm mb-3 sm:mb-4 leading-relaxed">
                     {project.desc}
                   </p>
                   
@@ -380,7 +535,7 @@ const Portfolio3D = () => {
                     {project.tech.map((tech, i) => (
                       <span
                         key={i}
-                        className="text-xs px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300"
+                        className="text-xs px-2 sm:px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300"
                       >
                         {tech}
                       </span>
@@ -394,42 +549,48 @@ const Portfolio3D = () => {
       </section>
 
       {/* Web Projects Section */}
-      <section className="relative min-h-screen px-6 py-20">
+      <section id="web-projects" className="relative py-20 sm:py-32 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-5xl font-bold text-center mb-4 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-3 sm:mb-4 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
             Web Development Projects
           </h2>
-          <p className="text-center text-gray-400 mb-16 text-lg">Modern Full-Stack Applications</p>
+          <p className="text-center text-gray-400 mb-8 sm:mb-16 text-sm sm:text-lg">Modern Full-Stack Applications</p>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8 max-w-4xl mx-auto">
             {webProjects.map((project, index) => (
               <div
                 key={index}
-                className="group relative backdrop-blur-xl bg-gradient-to-br from-purple-500/5 to-pink-500/5 border border-purple-500/20 rounded-2xl p-8 hover:border-purple-400/50 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20"
+                className="group relative backdrop-blur-xl bg-gradient-to-br from-purple-500/5 to-pink-500/5 border border-purple-500/20 rounded-xl sm:rounded-2xl p-6 sm:p-8 hover:border-purple-400/50 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20"
                 style={{
                   animation: `fadeInUp 0.6s ease-out ${index * 0.15}s both`
                 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/0 to-pink-500/0 group-hover:from-purple-500/10 group-hover:to-pink-500/10 rounded-2xl transition-all duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/0 to-pink-500/0 group-hover:from-purple-500/10 group-hover:to-pink-500/10 rounded-xl sm:rounded-2xl transition-all duration-500" />
                 
                 <div className="relative z-10">
-                  <div className="flex items-start justify-between mb-4">
-                    <Code className="w-8 h-8 text-purple-400" />
+                  <div className="flex items-start justify-between mb-3 sm:mb-4">
+                    <Code className="w-6 h-6 sm:w-8 sm:h-8 text-purple-400" />
                     <a
                       href={project.link}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="p-2 rounded-full bg-purple-500/10 hover:bg-purple-500/20 transition-all duration-300"
                     >
-                      <ExternalLink className="w-5 h-5 text-purple-400" />
+                      <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 text-purple-400" />
                     </a>
                   </div>
                   
-                  <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-purple-400 transition-colors duration-300">
+                  {project.highlight && (
+                    <span className="inline-block px-2 py-1 rounded-full bg-purple-500/20 border border-purple-500/30 text-purple-400 text-xs font-semibold mb-2">
+                      {project.highlight}
+                    </span>
+                  )}
+                  
+                  <h3 className="text-lg sm:text-2xl font-bold text-white mb-2 sm:mb-3 group-hover:text-purple-400 transition-colors duration-300">
                     {project.title}
                   </h3>
                   
-                  <p className="text-gray-400 mb-4 leading-relaxed">
+                  <p className="text-gray-400 text-sm sm:text-base mb-3 sm:mb-4 leading-relaxed">
                     {project.desc}
                   </p>
                   
@@ -437,7 +598,7 @@ const Portfolio3D = () => {
                     {project.tech.map((tech, i) => (
                       <span
                         key={i}
-                        className="text-xs px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300"
+                        className="text-xs px-2 sm:px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300"
                       >
                         {tech}
                       </span>
@@ -450,24 +611,59 @@ const Portfolio3D = () => {
         </div>
       </section>
 
+      {/* Testimonials Section */}
+      <section id="testimonials" className="relative py-20 sm:py-32 px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-3 sm:mb-4 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+            Testimonials
+          </h2>
+          <p className="text-center text-gray-400 mb-8 sm:mb-16 text-sm sm:text-lg">What People Say About My Work</p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+            {testimonials.map((testimonial, index) => (
+              <div
+                key={index}
+                className="backdrop-blur-xl bg-gradient-to-br from-cyan-500/5 to-purple-500/5 border border-cyan-500/20 rounded-xl sm:rounded-2xl p-4 sm:p-6 hover:border-cyan-400/50 transition-all duration-500 hover:scale-105"
+                style={{
+                  animation: `fadeInUp 0.6s ease-out ${index * 0.15}s both`
+                }}
+              >
+                <div className="flex gap-1 mb-3 sm:mb-4">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 sm:w-5 sm:h-5 fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+                <p className="text-gray-300 text-xs sm:text-sm mb-4 sm:mb-6 leading-relaxed italic">
+                  "{testimonial.text}"
+                </p>
+                <div className="border-t border-cyan-500/20 pt-3 sm:pt-4">
+                  <h4 className="text-white font-semibold text-sm sm:text-base">{testimonial.name}</h4>
+                  <p className="text-cyan-400 text-xs sm:text-sm">{testimonial.role}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Contact Section */}
-      <section className="relative min-h-screen flex items-center justify-center px-6 py-20">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-5xl font-bold mb-8 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+      <section id="contact" className="relative py-20 sm:py-32 px-4 sm:px-6">
+        <div className="max-w-3xl mx-auto text-center w-full">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 sm:mb-8 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
             Let's Connect
           </h2>
-          <p className="text-xl text-gray-300 mb-12">
+          <p className="text-base sm:text-xl text-gray-300 mb-8 sm:mb-12">
             Feel free to reach out for opportunities or collaboration
           </p>
           
-          <div className="backdrop-blur-xl bg-gradient-to-br from-cyan-500/10 to-purple-500/10 border border-cyan-500/20 rounded-3xl p-10">
-            <div className="space-y-6">
+          <div className="backdrop-blur-xl bg-gradient-to-br from-cyan-500/10 to-purple-500/10 border border-cyan-500/20 rounded-2xl sm:rounded-3xl p-6 sm:p-10">
+            <div className="space-y-4 sm:space-y-6">
               <a
                 href="mailto:mghulamali888@gmail.com"
-                className="flex items-center justify-center gap-4 p-4 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/20 hover:border-cyan-400/50 transition-all duration-300 group"
+                className="flex items-center justify-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/20 hover:border-cyan-400/50 transition-all duration-300 group"
               >
-                <Mail className="w-6 h-6 text-cyan-400 group-hover:scale-110 transition-transform duration-300" />
-                <span className="text-lg text-gray-300 group-hover:text-cyan-400 transition-colors duration-300">
+                <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-cyan-400 group-hover:scale-110 transition-transform duration-300" />
+                <span className="text-sm sm:text-lg text-gray-300 group-hover:text-cyan-400 transition-colors duration-300 break-all">
                   mghulamali888@gmail.com
                 </span>
               </a>
@@ -476,10 +672,10 @@ const Portfolio3D = () => {
                 href="https://github.com/Muhammad-Ghulam-Ali"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-4 p-4 rounded-xl bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/20 hover:border-purple-400/50 transition-all duration-300 group"
+                className="flex items-center justify-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/20 hover:border-purple-400/50 transition-all duration-300 group"
               >
-                <Github className="w-6 h-6 text-purple-400 group-hover:scale-110 transition-transform duration-300" />
-                <span className="text-lg text-gray-300 group-hover:text-purple-400 transition-colors duration-300">
+                <Github className="w-5 h-5 sm:w-6 sm:h-6 text-purple-400 group-hover:scale-110 transition-transform duration-300" />
+                <span className="text-sm sm:text-lg text-gray-300 group-hover:text-purple-400 transition-colors duration-300">
                   GitHub Profile
                 </span>
               </a>
@@ -488,21 +684,26 @@ const Portfolio3D = () => {
                 href="https://www.linkedin.com/in/muhammad-ghulam-ali-b25330216"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-4 p-4 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 hover:border-blue-400/50 transition-all duration-300 group"
+                className="flex items-center justify-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 hover:border-blue-400/50 transition-all duration-300 group"
               >
-                <Linkedin className="w-6 h-6 text-blue-400 group-hover:scale-110 transition-transform duration-300" />
-                <span className="text-lg text-gray-300 group-hover:text-blue-400 transition-colors duration-300">
+                <Linkedin className="w-5 h-5 sm:w-6 sm:h-6 text-blue-400 group-hover:scale-110 transition-transform duration-300" />
+                <span className="text-sm sm:text-lg text-gray-300 group-hover:text-blue-400 transition-colors duration-300">
                   LinkedIn Profile
                 </span>
               </a>
             </div>
           </div>
-          
-          <p className="mt-12 mb-0 text-gray-500 text-sm">
-            Designed & Developed by Muhammad Ghulam Ali
-          </p>
         </div>
       </section>
+
+      {/* Footer */}
+      <footer className="relative py-8 px-4 sm:px-6 border-t border-cyan-500/20">
+        <div className="max-w-7xl mx-auto text-center">
+          <p className="text-gray-500 text-xs sm:text-sm">
+            © 2026 Muhammad Ghulam Ali. Designed & Developed with passion.
+          </p>
+        </div>
+      </footer>
 
       <style jsx>{`
         @keyframes fadeInUp {
@@ -526,7 +727,7 @@ const Portfolio3D = () => {
         }
 
         .animate-fadeIn {
-          animation: fadeIn 1s ease-out;
+          animation: fadeIn 0.5s ease-out;
         }
       `}</style>
     </div>
