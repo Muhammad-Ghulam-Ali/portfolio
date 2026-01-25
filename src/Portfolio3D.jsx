@@ -48,7 +48,7 @@ const Portfolio3D = () => {
     },
     {
       name: "Hassan Malik",
-      role: "Senior Data Scientist",
+      role: "Senior Data Scientist, TechCorp",
       text: "Working with Muhammad on collaborative projects has been impressive. His ability to translate business problems into data solutions is remarkable.",
       rating: 5
     },
@@ -132,7 +132,7 @@ const Portfolio3D = () => {
   const skills = {
     "Data Science & ML": ["Python", "Scikit-Learn", "TensorFlow", "PyTorch", "Pandas", "NumPy"],
     "Data Analysis": ["SQL", "Power BI", "Tableau", "Excel", "Statistical Analysis"],
-    "Web Development": ["React", "JavaScript", "HTML/CSS", "Streamlit", "Bootstrap", "Tailwind"],
+    "Web Development": ["React", "JavaScript", "HTML/CSS", "Streamlit", "Bootstrap"],
     "Tools & Technologies": ["Git", "Jupyter", "VS Code", "Docker", "AWS"]
   };
 
@@ -162,7 +162,7 @@ const Portfolio3D = () => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     rendererRef.current = renderer;
 
-    const particleCount = window.innerWidth < 768 ? 1000 : 2000;
+    const particleCount = window.innerWidth < 768 ? 800 : 1500;
     const positions = new Float32Array(particleCount * 3);
     const colors = new Float32Array(particleCount * 3);
 
@@ -172,7 +172,8 @@ const Portfolio3D = () => {
       positions[i * 3 + 2] = (Math.random() - 0.5) * 100;
 
       const color = new THREE.Color();
-      color.setHSL(0.6 + Math.random() * 0.2, 0.8, 0.6);
+      const hue = 0.5 + Math.random() * 0.15; // cyan to blue range
+      color.setHSL(hue, 0.7, 0.5);
       colors[i * 3] = color.r;
       colors[i * 3 + 1] = color.g;
       colors[i * 3 + 2] = color.b;
@@ -182,12 +183,28 @@ const Portfolio3D = () => {
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
+    // Create glow texture
+    const canvas = document.createElement('canvas');
+    canvas.width = 32;
+    canvas.height = 32;
+    const ctx = canvas.getContext('2d');
+    const gradient = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
+    gradient.addColorStop(0, 'rgba(255,255,255,1)');
+    gradient.addColorStop(0.2, 'rgba(255,255,255,0.6)');
+    gradient.addColorStop(0.4, 'rgba(255,255,255,0.2)');
+    gradient.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, 32, 32);
+    const texture = new THREE.CanvasTexture(canvas);
+
     const material = new THREE.PointsMaterial({
-      size: window.innerWidth < 768 ? 0.1 : 0.15,
+      size: window.innerWidth < 768 ? 0.4 : 0.6,
       vertexColors: true,
       transparent: true,
-      opacity: 0.8,
-      blending: THREE.AdditiveBlending
+      opacity: 0.6,
+      blending: THREE.AdditiveBlending,
+      map: texture,
+      depthWrite: false
     });
 
     const particles = new THREE.Points(geometry, material);
@@ -195,9 +212,9 @@ const Portfolio3D = () => {
     particlesRef.current = particles;
 
     const starGeometry = new THREE.BufferGeometry();
-    const starPositions = new Float32Array(1000 * 3);
+    const starPositions = new Float32Array(300 * 3);
     
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < 300; i++) {
       starPositions[i * 3] = (Math.random() - 0.5) * 200;
       starPositions[i * 3 + 1] = (Math.random() - 0.5) * 200;
       starPositions[i * 3 + 2] = (Math.random() - 0.5) * 200;
@@ -206,9 +223,9 @@ const Portfolio3D = () => {
     starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
     const starMaterial = new THREE.PointsMaterial({
       color: 0xffffff,
-      size: 0.05,
+      size: 0.08,
       transparent: true,
-      opacity: 0.6
+      opacity: 0.4
     });
     
     const stars = new THREE.Points(starGeometry, starMaterial);
@@ -216,12 +233,16 @@ const Portfolio3D = () => {
 
     const animate = () => {
       if (particlesRef.current) {
-        particlesRef.current.rotation.y += 0.0005;
-        particlesRef.current.rotation.x += 0.0002;
+        particlesRef.current.rotation.y += 0.0008;
+        particlesRef.current.rotation.x += 0.0004;
+        
+        // Gentle pulsing effect
+        const time = Date.now() * 0.0008;
+        particlesRef.current.material.opacity = 0.5 + Math.sin(time) * 0.1;
       }
 
       if (stars) {
-        stars.rotation.y -= 0.0001;
+        stars.rotation.y -= 0.0002;
       }
 
       renderer.render(scene, camera);
@@ -289,10 +310,10 @@ const Portfolio3D = () => {
   };
 
   return (
-    <div className="relative w-full bg-black overflow-x-hidden">
+    <div className="relative w-full bg-transparent overflow-x-hidden">
       <canvas
         ref={canvasRef}
-        className="fixed top-0 left-0 w-full h-full -z-10"
+        className="fixed top-0 left-0 w-full h-full z-0"
         style={{ background: 'radial-gradient(circle at 50% 50%, #0a0a1a 0%, #000000 100%)' }}
       />
 
@@ -305,7 +326,7 @@ const Portfolio3D = () => {
             </h1>
             
             {/* Desktop Navigation */}
-            <div className="hidden md:flex gap-6">
+            <div className="hidden lg:flex gap-6">
               {['Home', 'About', 'Experience', 'ML', 'Web', 'Testimonials', 'Contact'].map((item, index) => (
                 <button
                   key={item}
@@ -324,7 +345,7 @@ const Portfolio3D = () => {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-lg bg-cyan-500/10 border border-cyan-500/30 hover:bg-cyan-500/20 transition-all duration-300"
+              className="lg:hidden p-2 rounded-lg bg-cyan-500/10 border border-cyan-500/30 hover:bg-cyan-500/20 transition-all duration-300"
             >
               {mobileMenuOpen ? (
                 <X className="w-6 h-6 text-cyan-400" />
@@ -336,7 +357,7 @@ const Portfolio3D = () => {
 
           {/* Mobile Menu */}
           {mobileMenuOpen && (
-            <div className="md:hidden mt-4 pb-4 space-y-2 animate-fadeIn">
+            <div className="lg:hidden mt-4 pb-4 space-y-2 animate-fadeIn">
               {['Home', 'About', 'Experience', 'ML', 'Web', 'Testimonials', 'Contact'].map((item, index) => (
                 <button
                   key={item}
@@ -356,7 +377,7 @@ const Portfolio3D = () => {
       </nav>
 
       {/* Hero Section */}
-      <section id="hero" className="relative h-screen flex flex-col items-center justify-center px-4 sm:px-6">
+      <section id="hero" className="relative h-screen flex flex-col items-center justify-center px-4 sm:px-6 z-10 bg-transparent">
         <div className="text-center space-y-4 sm:space-y-6 animate-fadeIn">
           <h1 className="text-4xl sm:text-6xl md:text-8xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent animate-pulse">
             MUHAMMAD GHULAM ALI
@@ -412,7 +433,7 @@ const Portfolio3D = () => {
       </section>
 
       {/* About Section */}
-      <section id="about" className="relative py-20 sm:py-32 px-4 sm:px-6">
+      <section id="about" className="relative py-20 sm:py-32 px-4 sm:px-6 z-10">
         <div className="max-w-4xl mx-auto w-full">
           <div className="backdrop-blur-xl bg-gradient-to-br from-cyan-500/10 to-purple-500/10 border border-cyan-500/20 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 shadow-2xl">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-cyan-400 mb-6 sm:mb-8">About Me</h2>
@@ -455,7 +476,7 @@ const Portfolio3D = () => {
       </section>
 
       {/* Experience Section */}
-      <section id="experience" className="relative py-20 sm:py-32 px-4 sm:px-6">
+      <section id="experience" className="relative py-20 sm:py-32 px-4 sm:px-6 z-10">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-3 sm:mb-4 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
             Experience & Education
@@ -486,7 +507,7 @@ const Portfolio3D = () => {
       </section>
 
       {/* ML Projects Section */}
-      <section id="ml-projects" className="relative py-20 sm:py-32 px-4 sm:px-6">
+      <section id="ml-projects" className="relative py-20 sm:py-32 px-4 sm:px-6 z-10">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-3 sm:mb-4 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
             Machine Learning Projects
@@ -549,7 +570,7 @@ const Portfolio3D = () => {
       </section>
 
       {/* Web Projects Section */}
-      <section id="web-projects" className="relative py-20 sm:py-32 px-4 sm:px-6">
+      <section id="web-projects" className="relative py-20 sm:py-32 px-4 sm:px-6 z-10">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-3 sm:mb-4 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
             Web Development Projects
@@ -612,7 +633,7 @@ const Portfolio3D = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section id="testimonials" className="relative py-20 sm:py-32 px-4 sm:px-6">
+      <section id="testimonials" className="relative py-20 sm:py-32 px-4 sm:px-6 z-10">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-3 sm:mb-4 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
             Testimonials
@@ -697,7 +718,7 @@ const Portfolio3D = () => {
       </section>
 
       {/* Footer */}
-      <footer className="relative py-8 px-4 sm:px-6 border-t border-cyan-500/20">
+      <footer className="relative py-8 px-4 sm:px-6 border-t border-cyan-500/20 z-10">
         <div className="max-w-7xl mx-auto text-center">
           <p className="text-gray-500 text-xs sm:text-sm">
             © 2026 Muhammad Ghulam Ali. Designed & Developed with passion.
@@ -705,7 +726,7 @@ const Portfolio3D = () => {
         </div>
       </footer>
 
-      <style jsx>{`
+      <style>{`
         @keyframes fadeInUp {
           from {
             opacity: 0;
