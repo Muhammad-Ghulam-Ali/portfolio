@@ -20,7 +20,7 @@ function useReveal(threshold = 0.12) {
   return [ref, v];
 }
 
-const Reveal = ({ children, delay = 0, direction = 'up' }) => {
+const Reveal = ({ children, delay = 0, direction = 'up', style = {} }) => {
   const [ref, v] = useReveal();
   const transforms = {
     up:    v ? 'translateY(0)'   : 'translateY(48px)',
@@ -33,6 +33,7 @@ const Reveal = ({ children, delay = 0, direction = 'up' }) => {
       opacity: v ? 1 : 0,
       transform: transforms[direction] || transforms.up,
       transition: `opacity .8s cubic-bezier(.22,1,.36,1) ${delay}s, transform .8s cubic-bezier(.22,1,.36,1) ${delay}s`,
+      ...style,
     }}>{children}</div>
   );
 };
@@ -371,59 +372,64 @@ export default function Portfolio3D() {
               </p>
 
               <div style={{
-                display:'flex', gap:14, flexWrap:'wrap',
+                width:'100%',
                 opacity: loaded?1:0, transform: loaded?'translateY(0)':'translateY(20px)',
                 transition:'all .8s cubic-bezier(.22,1,.36,1) .45s',
               }}>
-                <button onClick={() => goto('contact')} style={{
-                  padding:'14px 32px', borderRadius:99,
-                  background:`linear-gradient(135deg, ${BLUE} 0%, #6366F1 100%)`,
-                  color:WHITE, border:'none', cursor:'pointer',
-                  fontSize:15, fontWeight:700,
-                  boxShadow:`0 6px 24px rgba(0,87,255,0.4)`,
-                  display:'flex', alignItems:'center', gap:8,
-                  transition:'transform .22s, box-shadow .22s', fontFamily:'inherit',
-                }}
-                onMouseEnter={e=>{ e.currentTarget.style.transform='translateY(-3px)'; e.currentTarget.style.boxShadow='0 12px 36px rgba(0,87,255,0.5)'; }}
-                onMouseLeave={e=>{ e.currentTarget.style.transform='translateY(0)'; e.currentTarget.style.boxShadow='0 6px 24px rgba(0,87,255,0.4)'; }}>
-                  Get In Touch <ArrowRight size={17}/>
-                </button>
-                <button onClick={() => goto('projects')} style={{
-                  padding:'14px 32px', borderRadius:99,
-                  background:WHITE, color:DARK,
-                  border:`1.5px solid ${BORDER}`, cursor:'pointer',
-                  fontSize:15, fontWeight:700,
-                  boxShadow: cardShadow,
-                  transition:'all .22s', fontFamily:'inherit',
-                }}
-                onMouseEnter={e=>{ e.currentTarget.style.transform='translateY(-3px)'; e.currentTarget.style.boxShadow=cardHoverShadow; e.currentTarget.style.borderColor=BLUE_MID; }}
-                onMouseLeave={e=>{ e.currentTarget.style.transform='translateY(0)'; e.currentTarget.style.boxShadow=cardShadow; e.currentTarget.style.borderColor=BORDER; }}>
-                  View Projects
-                </button>
+                <div style={{ display:'flex', gap:14, flexWrap:'wrap', justifyContent:'flex-start' }}>
+                  <button onClick={() => goto('contact')} style={{
+                    padding:'14px 32px', borderRadius:99,
+                    background:`linear-gradient(135deg, ${BLUE} 0%, #6366F1 100%)`,
+                    color:WHITE, border:'none', cursor:'pointer',
+                    fontSize:15, fontWeight:700,
+                    boxShadow:`0 6px 24px rgba(0,87,255,0.4)`,
+                    display:'flex', alignItems:'center', gap:8,
+                    transition:'transform .22s, box-shadow .22s', fontFamily:'inherit',
+                  }}
+                  onMouseEnter={e=>{ e.currentTarget.style.transform='translateY(-3px)'; e.currentTarget.style.boxShadow='0 12px 36px rgba(0,87,255,0.5)'; }}
+                  onMouseLeave={e=>{ e.currentTarget.style.transform='translateY(0)'; e.currentTarget.style.boxShadow='0 6px 24px rgba(0,87,255,0.4)'; }}>
+                    Get In Touch <ArrowRight size={17}/>
+                  </button>
+                  <button onClick={() => goto('projects')} style={{
+                    padding:'14px 32px', borderRadius:99,
+                    background:WHITE, color:DARK,
+                    border:`1.5px solid ${BORDER}`, cursor:'pointer',
+                    fontSize:15, fontWeight:700,
+                    boxShadow: cardShadow,
+                    transition:'all .22s', fontFamily:'inherit',
+                  }}
+                  onMouseEnter={e=>{ e.currentTarget.style.transform='translateY(-3px)'; e.currentTarget.style.boxShadow=cardHoverShadow; e.currentTarget.style.borderColor=BLUE_MID; }}
+                  onMouseLeave={e=>{ e.currentTarget.style.transform='translateY(0)'; e.currentTarget.style.boxShadow=cardShadow; e.currentTarget.style.borderColor=BORDER; }}>
+                    View Projects
+                  </button>
+                </div>
               </div>
 
               {/* social links */}
               <div style={{
-                display:'flex', gap:12, marginTop:44,
+                width:'100%',
                 opacity: loaded?1:0, transform: loaded?'translateY(0)':'translateY(20px)',
                 transition:'all .8s cubic-bezier(.22,1,.36,1) .55s',
+                marginTop:44,
               }}>
-                {[
-                  { href:'https://github.com/Muhammad-Ghulam-Ali', icon:<Github size={18}/>, label:'GitHub' },
-                  { href:'https://www.linkedin.com/in/muhammad-ghulam-ali-b25330216', icon:<Linkedin size={18}/>, label:'LinkedIn' },
-                  { href:'mailto:mghulamali888@gmail.com', icon:<Mail size={18}/>, label:'Email' },
-                ].map(({ href, icon, label }) => (
-                  <a key={href} href={href} target="_blank" rel="noopener noreferrer" style={{
-                    display:'flex', alignItems:'center', gap:8, padding:'10px 18px', borderRadius:99,
-                    background:WHITE, border:`1.5px solid ${BORDER}`,
-                    color:BODY, textDecoration:'none', fontSize:14, fontWeight:600,
-                    boxShadow: cardShadow, transition:'all .22s',
-                  }}
-                  onMouseEnter={e=>{ e.currentTarget.style.transform='translateY(-3px)'; e.currentTarget.style.color=BLUE; e.currentTarget.style.borderColor=BLUE_MID; e.currentTarget.style.boxShadow=cardHoverShadow; }}
-                  onMouseLeave={e=>{ e.currentTarget.style.transform='translateY(0)'; e.currentTarget.style.color=BODY; e.currentTarget.style.borderColor=BORDER; e.currentTarget.style.boxShadow=cardShadow; }}>
-                    {icon}{label}
-                  </a>
-                ))}
+                <div style={{ display:'flex', gap:12, flexWrap:'wrap', justifyContent:'flex-start' }}>
+                  {[
+                    { href:'https://github.com/Muhammad-Ghulam-Ali', icon:<Github size={18}/>, label:'GitHub' },
+                    { href:'https://www.linkedin.com/in/muhammad-ghulam-ali-b25330216', icon:<Linkedin size={18}/>, label:'LinkedIn' },
+                    { href:'mailto:mghulamali888@gmail.com', icon:<Mail size={18}/>, label:'Email' },
+                  ].map(({ href, icon, label }) => (
+                    <a key={href} href={href} target="_blank" rel="noopener noreferrer" style={{
+                      display:'flex', alignItems:'center', gap:8, padding:'10px 18px', borderRadius:99,
+                      background:WHITE, border:`1.5px solid ${BORDER}`,
+                      color:BODY, textDecoration:'none', fontSize:14, fontWeight:600,
+                      boxShadow: cardShadow, transition:'all .22s',
+                    }}
+                    onMouseEnter={e=>{ e.currentTarget.style.transform='translateY(-3px)'; e.currentTarget.style.color=BLUE; e.currentTarget.style.borderColor=BLUE_MID; e.currentTarget.style.boxShadow=cardHoverShadow; }}
+                    onMouseLeave={e=>{ e.currentTarget.style.transform='translateY(0)'; e.currentTarget.style.color=BODY; e.currentTarget.style.borderColor=BORDER; e.currentTarget.style.boxShadow=cardShadow; }}>
+                      {icon}{label}
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -573,10 +579,10 @@ export default function Portfolio3D() {
             <SectionHead tag="Contact" title={<>Let's Work<br />Together.</>} subtitle="Open to data analyst, ML engineer, and business analyst roles. Let's build something meaningful." />
           </Reveal>
 
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:24 }}>
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:24, alignItems:'stretch' }}>
             {/* contact info */}
             <Reveal direction="left" delay={0.1}>
-              <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
+              <div style={{ display:'flex', flexDirection:'column', gap:12, height:'100%' }}>
                 {[
                   { href:'mailto:mghulamali888@gmail.com', icon:<Mail size={20}/>, label:'mghulamali888@gmail.com', sub:'Send an email' },
                   { href:'https://github.com/Muhammad-Ghulam-Ali', icon:<Github size={20}/>, label:'Muhammad-Ghulam-Ali', sub:'GitHub Profile' },
@@ -587,27 +593,28 @@ export default function Portfolio3D() {
               </div>
             </Reveal>
 
-            {/* big CTA card */}
-            <Reveal direction="right" delay={0.15}>
+            {/* big CTA card — height matches left column via flex */}
+            <Reveal direction="right" delay={0.15} style={{ height:'100%' }}>
               <div style={{
                 background:`linear-gradient(135deg, ${BLUE} 0%, #6366F1 100%)`,
-                borderRadius:24, padding:'48px 40px',
+                borderRadius:24, padding:'32px 36px',
                 boxShadow:`0 24px 64px rgba(0,87,255,0.35)`,
-                height:'100%', display:'flex', flexDirection:'column', justifyContent:'center',
+                height:'100%', display:'flex', flexDirection:'column', justifyContent:'center', gap:12,
               }}>
-                <span style={{ fontSize:12, fontWeight:700, letterSpacing:'0.1em', textTransform:'uppercase', color:'rgba(255,255,255,0.7)', marginBottom:16 }}>Ready to collaborate</span>
-                <h3 style={{ fontSize:36, fontWeight:900, color:WHITE, letterSpacing:'-0.03em', lineHeight:1.1, marginBottom:16, fontFamily:"'Plus Jakarta Sans', sans-serif" }}>
+                <span style={{ fontSize:11, fontWeight:700, letterSpacing:'0.1em', textTransform:'uppercase', color:'rgba(255,255,255,0.65)' }}>Ready to collaborate</span>
+                <h3 style={{ fontSize:28, fontWeight:900, color:WHITE, letterSpacing:'-0.03em', lineHeight:1.15, fontFamily:"'Plus Jakarta Sans', sans-serif" }}>
                   I'm just one<br />message away.
                 </h3>
-                <p style={{ fontSize:15, color:'rgba(255,255,255,0.75)', lineHeight:1.75, marginBottom:32 }}>
+                <p style={{ fontSize:14, color:'rgba(255,255,255,0.72)', lineHeight:1.75 }}>
                   Whether you have a project, a role, or just want to connect — I'd love to hear from you.
                 </p>
                 <a href="mailto:mghulamali888@gmail.com" style={{
                   display:'inline-flex', alignItems:'center', gap:8,
-                  padding:'14px 28px', borderRadius:99, background:WHITE,
-                  color:BLUE, textDecoration:'none', fontSize:15, fontWeight:800,
+                  padding:'12px 24px', borderRadius:99, background:WHITE,
+                  color:BLUE, textDecoration:'none', fontSize:14, fontWeight:800,
                   alignSelf:'flex-start', transition:'all .22s',
                   boxShadow:'0 4px 16px rgba(0,0,0,0.15)',
+                  marginTop:4,
                 }}
                 onMouseEnter={e=>{ e.currentTarget.style.transform='translateY(-3px)'; e.currentTarget.style.boxShadow='0 8px 32px rgba(0,0,0,0.2)'; }}
                 onMouseLeave={e=>{ e.currentTarget.style.transform='translateY(0)'; e.currentTarget.style.boxShadow='0 4px 16px rgba(0,0,0,0.15)'; }}>
@@ -652,6 +659,8 @@ export default function Portfolio3D() {
         @media(min-width:1024px){ .hidden.lg\\:flex{ display:flex !important; } .hidden.lg\\:block{ display:block !important; } }
         @media(max-width:768px){
           #about > div > div,
+          #contact > div > div:last-child { grid-template-columns:1fr !important; }
+          #hero > div > div > div { grid-template-columns:1fr !important; }
           #contact > div > div:last-child { grid-template-columns:1fr !important; }
         }
         @keyframes bounceY {
