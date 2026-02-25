@@ -634,7 +634,7 @@ export default function Portfolio3D() {
           </div>
           <span style={{ color:'rgba(255,255,255,0.8)', fontSize:14, fontWeight:600 }}>Muhammad Ghulam Ali</span>
         </div>
-        <span style={{ color:'rgba(255,255,255,0.4)', fontSize:13 }}>© 2026 · Data Scientist · ML Engineer</span>
+        <span style={{ color:'rgba(255,255,255,0.4)', fontSize:13 }}>© 2026 ·Aspiring Data Scientist · ML Engineer</span>
         <div style={{ display:'flex', gap:16 }}>
           {[
             { href:'https://github.com/Muhammad-Ghulam-Ali', icon:<Github size={18}/> },
