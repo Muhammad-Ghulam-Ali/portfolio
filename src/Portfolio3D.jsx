@@ -196,7 +196,7 @@ export default function Portfolio3D() {
 
   const experiences = [
     { title: 'Audit Executive', company: 'Marriott Hotel Islamabad', period: '2022 – 2023', desc: 'Conducted financial audits, compliance reviews, and risk assessments across hotel departments.', icon: Briefcase, color: '#F0FDF4', iconBg: '#DCFCE7', iconColor: '#16A34A' },
-    { title: 'Finance Officer', company: 'Agahi Pakistan', period: '2021 – 2022', desc: 'Managed budget analysis, financial reporting, and end-to-end operational finance.', icon: TrendingUp, color: '#FFF7ED', iconBg: '#FFEDD5', iconColor: '#EA580C' },
+    { title: 'Data Analyst', company: 'Agahe Pakistan', period: '2023 – 2024', desc: 'Analyzed operational data, built reports, and supported data-driven decision making across programs.', icon: TrendingUp, color: '#FFF7ED', iconBg: '#FFEDD5', iconColor: '#EA580C' },
     { title: 'MS Business Analytics', company: 'FAST University Islamabad', period: 'Current', desc: 'Specialising in Machine Learning, statistical modelling, and business intelligence systems.', icon: GraduationCap, color: BLUE_LIGHT, iconBg: BLUE_MID, iconColor: BLUE },
   ];
 
@@ -212,7 +212,7 @@ export default function Portfolio3D() {
     { title: 'Advanced Data Analysis', desc: 'Interactive retail analysis surfacing customer behaviour trends and hidden revenue opportunities.', link: 'https://github.com/Muhammad-Ghulam-Ali/Advanced-Data-Analysis', tech: ['Data Viz', 'Feature Eng', 'EDA'], badge: '20+ Insights' },
     { title: 'Fake Review Detector', desc: 'NLP pipeline using TF-IDF vectorisation and SVM classification to detect and flag fake reviews.', link: 'https://github.com/Muhammad-Ghulam-Ali/fake-review-detection-svm-nlp', tech: ['NLP', 'SVM', 'TF-IDF'], badge: '89% F1 Score' },
     { title: 'Bank Customer Segmentation', desc: 'Full clustering pipeline: SQL → PCA dimensionality reduction → KMeans → interactive Tkinter UI.', link: 'https://github.com/Muhammad-Ghulam-Ali/bank-customer-segmentation-ml', tech: ['SQL', 'KMeans', 'PCA', 'Tkinter'], badge: '5 Clusters' },
-    { title: 'AutoAnalytica', desc: 'Streamlit app for one-click automated EDA, data cleaning, and dashboard generation.', link: 'https://github.com/Muhammad-Ghulam-Ali/bank-customer-segmentation-ml', tech: ['Streamlit', 'Automation', 'Dashboard'], badge: 'Auto EDA' },
+    { title: 'AutoAnalytica', desc: 'Streamlit app for one-click automated EDA, data cleaning, and dashboard generation.', link: 'https://github.com/Muhammad-Ghulam-Ali/autoanalytica', tech: ['Streamlit', 'Automation', 'Dashboard'], badge: 'Auto EDA' },
     { title: 'Financial Statement Analyzer', desc: 'Smart SFSA web app automating ratio analysis and ML-based financial health score forecasting.', link: 'https://github.com/Muhammad-Ghulam-Ali/Smart-Financial-Statement-Analyzer-SFSA-', tech: ['ML', 'Finance', 'Web App'], badge: 'Real-time' },
   ];
 
