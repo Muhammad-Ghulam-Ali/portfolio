@@ -223,9 +223,9 @@ export default function Portfolio3D() {
 
   const skills = {
     'ML & AI': ['Python', 'Scikit-Learn', 'TensorFlow', 'PyTorch', 'Pandas', 'NumPy', 'NLP'],
-    'Data & BI': ['SQL', 'Power BI', 'Tableau', 'Excel', 'Statistical Analysis'],
-    'Web Dev': ['React', 'JavaScript', 'HTML/CSS', 'Streamlit', 'Bootstrap'],
-    'Tools': ['Git', 'Jupyter', 'VS Code', 'Docker', 'AWS'],
+    'Data & BI': ['SQL', 'Power BI', 'Excel', 'R', 'Statistical Analysis'],
+    'Web Dev': ['React', 'Node.js', 'MongoDB', 'FastAPI'],
+    'Tools': ['Git', 'Jupyter', 'VS Code'],
   };
 
   useEffect(() => {
@@ -385,7 +385,7 @@ export default function Portfolio3D() {
                 opacity: loaded ? 1 : 0, transform: loaded ? 'translateY(0)' : 'translateY(20px)',
                 transition: 'all .8s cubic-bezier(.22,1,.36,1) .35s',
               }}>
-                MS Business Analytics student at FAST University. Finance professional turned ML Engineer — I build models, pipelines, and apps that make data actionable.
+                Data Analyst, aspiring Data Scientist. MS in Business Analytics from FAST NUCES. I build data pipelines, dashboards, and ML tools that turn raw data into decisions.
               </p>
 
               <div style={{
@@ -485,9 +485,9 @@ export default function Portfolio3D() {
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'start' }}>
             <Reveal direction="left">
-              <SectionHead tag="About Me" title={<>Finance background.<br />Data science brain.</>} />
+              <SectionHead tag="About Me" title={<>Finance foundation.<br />Data science execution.</>} />
               <p style={{ fontSize: 17, color: BODY, lineHeight: 1.85, marginBottom: 32 }}>
-                I'm an MS Business Analytics student at FAST University with real-world experience as an <strong style={{ color: DARK }}>Audit Executive at Marriott</strong> and <strong style={{ color: DARK }}>Finance Officer at Agahi Pakistan</strong>. I sit at the intersection of finance and machine learning — translating complex data into clear business decisions.
+              MS Business Analytics student at FAST NUCES, with hands-on experience as an Audit Executive Intern at Marriott and Data Analyst at Agahe Pakistan. I combine a finance background with data science skills to turn complex data into clear business decisions.
               </p>
               <div style={{ display: 'flex', gap: 12 }}>
                 <button onClick={() => goto('projects')} style={{
