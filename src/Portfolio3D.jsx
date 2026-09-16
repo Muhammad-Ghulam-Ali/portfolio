@@ -216,9 +216,43 @@ export default function Portfolio3D() {
     { title: 'Financial Statement Analyzer', desc: 'Smart SFSA web app automating ratio analysis and ML-based financial health score forecasting.', link: 'https://github.com/Muhammad-Ghulam-Ali/Smart-Financial-Statement-Analyzer-SFSA-', tech: ['ML', 'Finance', 'Web App'], badge: 'Real-time' },
   ];
 
+
   const webProjects = [
-    { title: 'Ecommerce Store', desc: 'Full front-end e-commerce with product listing, cart logic, and localStorage persistence.', link: 'https://github.com/Muhammad-Ghulam-Ali/ecommerce-store', tech: ['HTML', 'Bootstrap', 'JavaScript'], badge: 'Full Cart' },
-    { title: 'Time Management App', desc: 'Student productivity planner tracking assignments, quizzes, and deadlines with smart alerts.', link: 'https://github.com/Muhammad-Ghulam-Ali/time_management_app', tech: ['JavaScript', 'localStorage', 'Bootstrap'], badge: 'Student Tool' },
+    {
+      title: 'THREADS - Ecommerce Storefront',
+      desc: 'Full ecommerce storefront for a fashion brand: landing page, product listing, single product page with add to cart, and a multi step checkout flow.',
+      link: 'https://threads-store-ecommerce.vercel.app/',
+      tech: ['React', 'Tailwind CSS'],
+      badge: 'Full Stack UX',
+    },
+    {
+      title: 'MimicAI',
+      desc: 'No-code AI chatbot builder. Write a system prompt, get a live shareable chatbot link in seconds.',
+      link: 'https://mimic-ai-neon.vercel.app',
+      tech: ['React', 'Node.js', 'Express', 'MongoDB', 'OpenRouter API'],
+      badge: 'AI Product',
+    },
+    {
+      title: 'Weather App',
+      desc: 'Real-time weather app with live temperature, humidity, and wind data by city search.',
+      link: 'https://ghulamaliweatherapp.netlify.app/',
+      tech: ['React', 'Vite', 'Tailwind CSS'],
+      badge: 'API Integration',
+    },
+    {
+      title: 'GitHub Profile Finder',
+      desc: 'Search any GitHub user and view their profile, stats, and latest repositories in real time.',
+      link: 'https://github-userprofilesearch.netlify.app/',
+      tech: ['React'],
+      badge: 'API Integration',
+    },
+    {
+      title: 'MyNoteFlow',
+      desc: 'Minimal note-taking app with category filters, priority tags, and local storage persistence.',
+      link: 'https://mynoteflow.netlify.app/',
+      tech: ['React', 'Vite'],
+      badge: 'Productivity Tool',
+    },
   ];
 
   const skills = {
@@ -563,7 +597,7 @@ export default function Portfolio3D() {
           <Reveal>
             <SectionHead tag="Web Development" title="Web Projects" subtitle="Clean, functional front-end applications." center />
           </Reveal>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(340px,1fr))', gap: 24, maxWidth: 860, margin: '0 auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: 24, maxWidth: 1100, margin: '0 auto' }}>
             {webProjects.map((p, i) => (
               <Reveal key={i} delay={i * 0.12}>
                 <WebCard project={p} />
